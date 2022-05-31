@@ -411,6 +411,7 @@ body:not(.user-is-tabbing) a:focus {
     background-position: center;
     background-attachment: fixed;
     font-size: var(--font-size-normal);
+    min-height: auto;
 }
 
 .header__text {
