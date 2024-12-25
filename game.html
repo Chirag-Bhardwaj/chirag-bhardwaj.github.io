@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Asteroid Field</title>
+    <title>Space Asteroids</title>
     <style>
         body {
             margin: 0;
@@ -9,6 +9,7 @@
             background: #000;
             font-family: monospace;
             color: #fff;
+            cursor: crosshair;
         }
 
         #game-container {
@@ -17,7 +18,6 @@
             position: relative;
         }
 
-        /* Starfield background */
         .star {
             position: absolute;
             width: 2px;
@@ -26,22 +26,57 @@
             border-radius: 50%;
         }
 
-        /* Player ship styling */
         #player {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             transform: translate(-50%, -50%);
         }
 
         .ship-body {
             position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 40px solid #4f8;
+            width: 50px;
+            height: 50px;
             transform-origin: 50% 50%;
+        }
+
+        .ship-core {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: #4f8;
+            clip-path: polygon(50% 0%, 0% 100%, 50% 80%, 100% 100%);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .wing-left, .wing-right {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: #2d5;
+            top: 20px;
+        }
+
+        .wing-left {
+            left: 0;
+            clip-path: polygon(0% 100%, 100% 0%, 100% 100%);
+        }
+
+        .wing-right {
+            right: 0;
+            clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+        }
+
+        .cockpit {
+            position: absolute;
+            width: 16px;
+            height: 20px;
+            background: #8ff;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            left: 50%;
+            top: 10px;
+            transform: translateX(-50%);
         }
 
         .engine-flame {
@@ -49,38 +84,45 @@
             top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 10px;
-            height: 20px;
-            background: linear-gradient(to bottom, #f44, #ff0);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            width: 16px;
+            height: 25px;
+            background: linear-gradient(to bottom, #f44, #fa0);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
             animation: flicker 0.1s infinite;
         }
 
         @keyframes flicker {
-            0% { height: 20px; }
-            50% { height: 15px; }
-            100% { height: 20px; }
+            0% { height: 25px; opacity: 1; }
+            50% { height: 20px; opacity: 0.8; }
+            100% { height: 25px; opacity: 1; }
         }
 
-        /* Laser styling */
         .laser {
             position: absolute;
             width: 4px;
             height: 20px;
-            background: #f44;
+            background: linear-gradient(to bottom, #f44, #f88);
             border-radius: 2px;
             transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px #f44;
         }
 
-        /* Asteroid styling */
         .asteroid {
             position: absolute;
-            background: #888;
-            clip-path: polygon(50% 0%, 80% 30%, 100% 50%, 80% 80%, 50% 100%, 20% 80%, 0% 50%, 20% 20%);
+            background: linear-gradient(45deg, #666, #888);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%);
             transform-origin: center;
+            border-radius: 20%;
         }
 
-        /* UI Elements */
+        .fragment {
+            position: absolute;
+            background: linear-gradient(45deg, #666, #888);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transform-origin: center;
+            border-radius: 15%;
+        }
+
         #score {
             position: absolute;
             top: 20px;
@@ -126,15 +168,6 @@
             border: 2px solid #666;
         }
 
-        .fragment {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #888;
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            transform-origin: center;
-        }
-
         #hyperspace-indicator {
             position: absolute;
             bottom: 40px;
@@ -152,21 +185,27 @@
             text-align: center;
             background: rgba(0, 0, 0, 0.7);
             padding: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
         <div id="player">
-            <div class="ship-body"></div>
-            <div class="engine-flame"></div>
+            <div class="ship-body">
+                <div class="ship-core"></div>
+                <div class="wing-left"></div>
+                <div class="wing-right"></div>
+                <div class="cockpit"></div>
+                <div class="engine-flame"></div>
+            </div>
         </div>
         <div id="score">Score: 0</div>
         <div id="lives">Lives: 3</div>
         <div id="weapon-cooldown"><div id="cooldown-bar"></div></div>
         <div id="hyperspace-indicator">Hyperspace Ready [H]</div>
         <div id="controls">
-            Arrow keys to move | Space to shoot | H for hyperspace
+            Move mouse to fly | Click to shoot | H for hyperspace
         </div>
         <div id="game-over">
             <h2>Game Over</h2>
@@ -176,18 +215,22 @@
     </div>
 
     <script>
-        // Game state
         const state = {
             player: {
                 x: window.innerWidth / 2,
                 y: window.innerHeight / 2,
+                targetX: window.innerWidth / 2,
+                targetY: window.innerHeight / 2,
                 velocity: { x: 0, y: 0 },
                 rotation: 0,
                 lives: 3,
                 isAlive: true,
-                acceleration: 0.5,
                 maxSpeed: 8,
-                friction: 0.98
+                easing: 0.1
+            },
+            mouse: {
+                x: 0,
+                y: 0
             },
             score: 0,
             asteroids: [],
@@ -200,10 +243,11 @@
             hyperspaceReady: true,
             hyperspaceCooldown: 5000,
             gameLoop: null,
-            difficulty: 1
+            difficulty: 1,
+            spawnRate: 0.01,
+            maxAsteroids: 10
         };
 
-        // DOM elements
         const gameContainer = document.getElementById('game-container');
         const playerElement = document.getElementById('player');
         const scoreElement = document.getElementById('score');
@@ -213,11 +257,25 @@
         const finalScoreElement = document.getElementById('final-score');
         const hyperspaceIndicator = document.getElementById('hyperspace-indicator');
 
-        // Event listeners for keyboard input
+        document.addEventListener('mousemove', (e) => {
+            state.mouse.x = e.clientX;
+            state.mouse.y = e.clientY;
+        });
+
+        document.addEventListener('mousedown', (e) => {
+            if (e.button === 0) {
+                shoot();
+            }
+        });
+
         document.addEventListener('keydown', (e) => {
             state.keys[e.code] = true;
-            if (e.code === 'Space' && !state.player.isAlive) {
-                resetGame();
+            if (e.code === 'Space') {
+                if (!state.player.isAlive) {
+                    resetGame();
+                } else {
+                    shoot();
+                }
             }
         });
 
@@ -225,7 +283,6 @@
             state.keys[e.code] = false;
         });
 
-        // Initialize starfield
         function createStarfield() {
             for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
@@ -238,7 +295,6 @@
             }
         }
 
-        // Update star positions
         function updateStars() {
             state.stars.forEach(star => {
                 let y = parseFloat(star.style.top);
@@ -251,33 +307,56 @@
             });
         }
 
-        // Create asteroid
-        function createAsteroid() {
+        function createAsteroid(x, y, size = 'large', parentVelocity = null) {
             const asteroid = document.createElement('div');
             asteroid.className = 'asteroid';
-            const size = 30 + Math.random() * 40;
-            asteroid.style.width = `${size}px`;
-            asteroid.style.height = `${size}px`;
             
-            // Spawn asteroids from edges
-            let x, y;
-            if (Math.random() < 0.5) {
-                x = Math.random() < 0.5 ? -size : window.innerWidth + size;
-                y = Math.random() * window.innerHeight;
+            let asteroidSize;
+            switch(size) {
+                case 'large':
+                    asteroidSize = 60 + Math.random() * 20;
+                    break;
+                case 'medium':
+                    asteroidSize = 30 + Math.random() * 15;
+                    break;
+                case 'small':
+                    asteroidSize = 15 + Math.random() * 10;
+                    break;
+            }
+
+            asteroid.style.width = `${asteroidSize}px`;
+            asteroid.style.height = `${asteroidSize}px`;
+            
+            if (x === undefined || y === undefined) {
+                if (Math.random() < 0.5) {
+                    x = Math.random() < 0.5 ? -asteroidSize : window.innerWidth + asteroidSize;
+                    y = Math.random() * window.innerHeight;
+                } else {
+                    x = Math.random() * window.innerWidth;
+                    y = Math.random() < 0.5 ? -asteroidSize : window.innerHeight + asteroidSize;
+                }
+            }
+
+            let velocity;
+            if (parentVelocity) {
+                velocity = {
+                    x: parentVelocity.x + (Math.random() - 0.5) * 2,
+                    y: parentVelocity.y + (Math.random() - 0.5) * 2
+                };
             } else {
-                x = Math.random() * window.innerWidth;
-                y = Math.random() < 0.5 ? -size : window.innerHeight + size;
+                velocity = {
+                    x: (Math.random() - 0.5) * 4 * state.difficulty,
+                    y: (Math.random() - 0.5) * 4 * state.difficulty
+                };
             }
 
             const asteroid_obj = {
                 element: asteroid,
                 x: x,
                 y: y,
-                size: size,
-                velocity: {
-                    x: (Math.random() - 0.5) * 4 * state.difficulty,
-                    y: (Math.random() - 0.5) * 4 * state.difficulty
-                },
+                size: asteroidSize,
+                sizeClass: size,
+                velocity: velocity,
                 rotation: 0,
                 rotationSpeed: (Math.random() - 0.5) * 4
             };
@@ -286,7 +365,6 @@
             state.asteroids.push(asteroid_obj);
         }
 
-        // Create asteroid fragments
         function createFragments(x, y) {
             for (let i = 0; i < 3; i++) {
                 const fragment = document.createElement('div');
@@ -309,10 +387,29 @@
             }
         }
 
-        // Shoot laser
+        function splitAsteroid(asteroid) {
+            let newSize;
+            if (asteroid.sizeClass === 'large') {
+                newSize = 'medium';
+            } else if (asteroid.sizeClass === 'medium') {
+                newSize = 'small';
+            } else {
+                return;
+            }
+
+            for (let i = 0; i < 2; i++) {
+                createAsteroid(
+                    asteroid.x,
+                    asteroid.y,
+                    newSize,
+                    asteroid.velocity
+                );
+            }
+        }
+
         function shoot() {
             const now = Date.now();
-            if (now - state.lastShot >= state.shotCooldown) {
+            if (now - state.lastShot >= state.shotCooldown && state.player.isAlive) {
                 const laser = document.createElement('div');
                 laser.className = 'laser';
                 const angle = state.player.rotation * Math.PI / 180;
@@ -335,13 +432,11 @@
             }
         }
 
-        // Update cooldown bar
         function updateCooldownBar() {
             const progress = Math.min(1, (Date.now() - state.lastShot) / state.shotCooldown);
             cooldownBar.style.width = `${progress * 100}%`;
         }
 
-        // Hyperspace jump
         function hyperspace() {
             if (!state.hyperspaceReady) return;
 
@@ -349,7 +444,6 @@
             let newX, newY;
 
             if (malfunction) {
-                // Find nearest asteroid and jump near it
                 const nearestAsteroid = state.asteroids[0];
                 if (nearestAsteroid) {
                     newX = nearestAsteroid.x + (Math.random() - 0.5) * 100;
@@ -375,9 +469,7 @@
             }, state.hyperspaceCooldown);
         }
 
-        // Check collisions
         function checkCollisions() {
-            // Laser-Asteroid collisions
             state.lasers.forEach((laser, laserIndex) => {
                 state.asteroids.forEach((asteroid, asteroidIndex) => {
                     const dx = laser.x - asteroid.x;
@@ -385,23 +477,29 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < asteroid.size / 2) {
-                        // Remove laser and asteroid
                         gameContainer.removeChild(laser.element);
-                        gameContainer.removeChild(asteroid.element);
                         state.lasers.splice(laserIndex, 1);
+
+                        if (asteroid.sizeClass !== 'small') {
+                            splitAsteroid(asteroid);
+                        }
+
+                        gameContainer.removeChild(asteroid.element);
                         state.asteroids.splice(asteroidIndex, 1);
                         
-                        // Create fragments
                         createFragments(asteroid.x, asteroid.y);
                         
-                        // Increase score
-                        state.score += Math.floor(100 / asteroid.size * 30);
+                        const points = {
+                            'large': 100,
+                            'medium': 200,
+                            'small': 300
+                        };
+                        state.score += points[asteroid.sizeClass];
                         scoreElement.textContent = `Score: ${state.score}`;
                     }
                 });
             });
 
-            // Player-Asteroid collisions
             if (state.player.isAlive) {
                 state.asteroids.forEach(asteroid => {
                     const dx = state.player.x - asteroid.x;
@@ -409,14 +507,12 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < asteroid.size / 2 + 15) {
-                        // Player hit
                         state.player.lives--;
                         livesElement.textContent = `Lives: ${state.player.lives}`;
 
                         if (state.player.lives <= 0) {
                             gameOver();
                         } else {
-                            // Reset player position
                             state.player.x = window.innerWidth / 2;
                             state.player.y = window.innerHeight / 2;
                             state.player.velocity = { x: 0, y: 0 };
@@ -426,40 +522,38 @@
             }
         }
 
-        // Update game objects
         function updateGameObjects() {
-            // Update player
             if (state.player.isAlive) {
-                // Rotation
-                if (state.keys.ArrowLeft) {
-                    state.player.rotation -= 5;
-                }
-                if (state.keys.ArrowRight) {
-                    state.player.rotation += 5;
-                }
+                // Calculate angle to mouse
+                const dx = state.mouse.x - state.player.x;
+                const dy = state.mouse.y - state.player.y;
+                state.player.rotation = Math.atan2(dx, -dy) * 180 / Math.PI;
 
-                // Thrust
-                if (state.keys.ArrowUp) {
-                    const angle = state.player.rotation * Math.PI / 180;
-                    state.player.velocity.x += Math.sin(angle) * state.player.acceleration;
-                    state.player.velocity.y -= Math.cos(angle) * state.player.acceleration;
+                // Update player position with smooth following
+                const targetDX = state.mouse.x - state.player.x;
+                const targetDY = state.mouse.y - state.player.y;
+                
+                // Calculate distance to target
+                const distance = Math.sqrt(targetDX * targetDX + targetDY * targetDY);
+                
+                // Only move if the mouse is more than 5 pixels away
+                if (distance > 5) {
+                    // Calculate new velocity with easing
+                    state.player.velocity.x = targetDX * state.player.easing;
+                    state.player.velocity.y = targetDY * state.player.easing;
+
+                    // Limit speed
+                    const speed = Math.sqrt(state.player.velocity.x ** 2 + state.player.velocity.y ** 2);
+                    if (speed > state.player.maxSpeed) {
+                        const ratio = state.player.maxSpeed / speed;
+                        state.player.velocity.x *= ratio;
+                        state.player.velocity.y *= ratio;
+                    }
+
+                    // Update position
+                    state.player.x += state.player.velocity.x;
+                    state.player.y += state.player.velocity.y;
                 }
-
-                // Apply friction
-                state.player.velocity.x *= state.player.friction;
-                state.player.velocity.y *= state.player.friction;
-
-                // Limit speed
-                const speed = Math.sqrt(state.player.velocity.x ** 2 + state.player.velocity.y ** 2);
-                if (speed > state.player.maxSpeed) {
-                    const ratio = state.player.maxSpeed / speed;
-                    state.player.velocity.x *= ratio;
-                    state.player.velocity.y *= ratio;
-                }
-
-                // Update position
-                state.player.x += state.player.velocity.x;
-                state.player.y += state.player.velocity.y;
 
                 // Screen wrapping
                 if (state.player.x < 0) state.player.x = window.innerWidth;
@@ -467,15 +561,10 @@
                 if (state.player.y < 0) state.player.y = window.innerHeight;
                 if (state.player.y > window.innerHeight) state.player.y = 0;
 
-                // Update player element position and rotation
+                // Update player element
                 playerElement.style.left = `${state.player.x}px`;
                 playerElement.style.top = `${state.player.y}px`;
                 playerElement.style.transform = `translate(-50%, -50%) rotate(${state.player.rotation}deg)`;
-
-                // Shooting
-                if (state.keys.Space) {
-                    shoot();
-                }
 
                 // Hyperspace
                 if (state.keys.KeyH) {
@@ -489,7 +578,6 @@
                 asteroid.y += asteroid.velocity.y;
                 asteroid.rotation += asteroid.rotationSpeed;
 
-                // Screen wrapping for asteroids
                 if (asteroid.x < -asteroid.size) asteroid.x = window.innerWidth + asteroid.size;
                 if (asteroid.x > window.innerWidth + asteroid.size) asteroid.x = -asteroid.size;
                 if (asteroid.y < -asteroid.size) asteroid.y = window.innerHeight + asteroid.size;
@@ -506,7 +594,6 @@
                 laser.x += laser.velocity.x;
                 laser.y += laser.velocity.y;
 
-                // Remove lasers that are off screen
                 if (laser.x < 0 || laser.x > window.innerWidth ||
                     laser.y < 0 || laser.y > window.innerHeight) {
                     gameContainer.removeChild(laser.element);
@@ -538,7 +625,6 @@
             }
         }
 
-        // Game over
         function gameOver() {
             state.player.isAlive = false;
             gameOverScreen.style.display = 'block';
@@ -546,14 +632,11 @@
             clearInterval(state.gameLoop);
         }
 
-        // Reset game
         function resetGame() {
-            // Clear all game objects
             state.asteroids.forEach(asteroid => gameContainer.removeChild(asteroid.element));
             state.lasers.forEach(laser => gameContainer.removeChild(laser.element));
             state.fragments.forEach(fragment => gameContainer.removeChild(fragment.element));
 
-            // Reset game state
             state.player.x = window.innerWidth / 2;
             state.player.y = window.innerHeight / 2;
             state.player.velocity = { x: 0, y: 0 };
@@ -566,37 +649,34 @@
             state.fragments = [];
             state.lastShot = 0;
             state.difficulty = 1;
+            state.spawnRate = 0.01;
+            state.maxAsteroids = 10;
 
-            // Reset UI
             scoreElement.textContent = "Score: 0";
             livesElement.textContent = "Lives: 3";
             gameOverScreen.style.display = 'none';
 
-            // Restart game loop
             if (state.gameLoop) clearInterval(state.gameLoop);
             state.gameLoop = setInterval(gameLoop, 1000 / 60);
         }
 
-        // Main game loop
         function gameLoop() {
             updateStars();
             updateGameObjects();
             checkCollisions();
             updateCooldownBar();
 
-            // Increase difficulty over time
-            state.difficulty += 0.0001;
+            state.difficulty += 0.0002;
+            state.spawnRate = Math.min(0.03, 0.01 + state.difficulty * 0.005);
+            state.maxAsteroids = Math.min(20, 10 + Math.floor(state.difficulty * 2));
 
-            // Spawn new asteroids based on difficulty
-            if (Math.random() < 0.01 * state.difficulty && state.asteroids.length < 10 + state.difficulty) {
-                createAsteroid();
+            if (Math.random() < state.spawnRate && state.asteroids.length < state.maxAsteroids) {
+                createAsteroid(undefined, undefined, 'large');
             }
         }
 
-        // Initialize game
         createStarfield();
         resetGame();
     </script>
 </body>
 </html>
-                
