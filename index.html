@@ -1,215 +1,176 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" href="./images/favicon.png" />
-
-  <title>
-    Chirag Bhardwaj
-  </title>
-
-  <meta name="description" content="">
-  <meta name="keywords" content="Chirag Bhardwaj, Java, C, C++, Python, JavaScript, React" />
-  <link rel="stylesheet" href="index.css" />
-</head>
-
-<body>
-
-  <!-- ***** Header ***** -->
-
-  <header class="header" role="banner" id="top">
-    <div class="row">
-      <nav class="nav" role="navigation">
-        <ul class="nav__items">
-          <li class="nav__item">
-            <a href="#about" class="nav__link">About</a>
-          </li>
-          <li class="nav__item"><a href="#Projects" class="nav__link">Projects</a></li>
-
-          <li class="nav__item">
-            <a href="game.html" class="nav__link">Arcade</a>
-          </li>
-          
-          <li class="nav__item">
-            <a href="#contact" class="nav__link">Contact</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="header__text-box row">
-      <div class="header__text">
-        <h1 class="heading-primary">
-          <span>Chirag Bhardwaj</span>
-        </h1>
-        <p>Software Engineer | Building Future-Ready Software</p>
-        <a href="#contact" class="btn btn--pink">Get in touch</a>
-      </div>
-    </div>
-  </header>
-
-  <main role="main">
-
-    <!-- ***** About ***** -->
-
-    <section class="about" id="about">
-      <div class="row">
-        <h2>About Me</h2>
-        <div class="about__content">
-          
-            <p>
-              I'm a Computer Science graduate from the University of Wisconsin-Madison with a focus on developing innovative and impactful software solutions. 
-              I'm always excited to bring my skills to forward-thinking teams and continue growing as a software engineer.
-            </p>
-          <br>
-          
-        </div>
-        <a href="./Resume-alt.pdf" class="btn">My Resume</a>
-      </div>
-    </section>
-  </main>
-
-    <!-- ***** Work ***** -->
-
-    <section class="work" id="Projects">
-  <div class="row">
-    <h2>My Projects</h2>
-    <div class="work__boxes">
-      
-      <div class="work__box">
-        <div class="work__text">
-          <h3>Pneumonia X-Ray Detector</h3>
-          <p>
-            An AI-powered tool utilizing NIH’s chest x-ray dataset for pneumonia diagnosis. 
-            Trained using transfer learning with the VGG-16 architecture, achieving 92.4% accuracy.
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chirag Bhardwaj</title>
+    <meta name="description" content="Chirag Bhardwaj — Software Engineer building future-ready software." />
+    <meta name="keywords" content="Chirag Bhardwaj, Software Engineer, Java, C, C++, Python, JavaScript, React" />
+    <link rel="shortcut icon" type="image/png" href="./images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero" id="top">
+        <div class="hero__content">
+          <p class="eyebrow">Hello, I'm</p>
+          <h1>Chirag Bhardwaj</h1>
+          <p class="hero__subtitle">
+            Software engineer and Computer Science graduate from UW–Madison.
+            I love building future-ready software — from full-stack web apps to
+            machine learning tools that solve real problems.
           </p>
-          <ul class="work__list">
-            <li>Python</li>
-            <li>Flask</li>
-            <li>VGG-16</li>
-          </ul>
-
-          <div class="work__links">
-            <a href="PneumoniaXRay.html" class="link__text">
-              View Project <span>&rarr;</span>
-            </a>
-            <a href="https://github.com/Chirag-Bhardwaj/Pneumonia-XRay-Detector" title="View Source Code" target="_blank">
-              <img src="./images/github.svg" class="work__code" alt="GitHub">
-            </a>
+          <div class="hero__meta">
+            <a href="mailto:chiragbhardwaj2002@gmail.com">chiragbhardwaj2002@gmail.com</a>
+            <a href="https://www.linkedin.com/in/chiragbhardwaj18" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://github.com/Chirag-Bhardwaj" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <div class="hero__cta">
+            <a class="btn ghost" href="#projects">View projects</a>
+            <a class="btn ghost" href="./Resume-alt.pdf" target="_blank" rel="noreferrer">Resume PDF</a>
+            <a class="btn ghost" href="game.html">Arcade</a>
           </div>
         </div>
-        <div class="work__image-box">
-          <img src="PneumoniaXRay.png" class="work__image" alt="Pneumonia X-Ray Detector Project" />
+        <div class="hero__visual">
+          <img class="brand-logo" src="./images/favicon.png" alt="Chirag Bhardwaj logo" />
         </div>
-      </div>
-      
-      <div class="work__box">
-        <div class="work__text">
-          <h3>Dating App</h3>
-          <p>
-            A full-stack mobile dating app built with React Native and Firebase. 
-            Features account creation, profile swiping, and matching functionalities, 
-            providing a user-friendly experience with smooth UI.
-          </p>
-          <ul class="work__list">
-            <li>JavaScript</li>
-            <li>React Native</li>
-            <li>Firebase</li>
-          </ul>
+      </header>
 
-          <div class="work__links">
-            <a href="DatingApp.html" class="link__text">
-              View Project <span>&rarr;</span>
-            </a>
-            <a href="https://github.com/Chirag-Bhardwaj/Dating-App" title="View Source Code" target="_blank">
-              <img src="./images/github.svg" class="work__code" alt="GitHub">
-            </a>
+      <main>
+        <section class="section" id="about">
+          <div class="section__header">
+            <h2>About</h2>
           </div>
-        </div>
-        <div class="work__image-box">
-          <img src="DatingApp.png" class="work__image" alt="Dating App Project" />
-        </div>
-      </div>
-      
-      <div class="work__box">
-        <div class="work__text">
-          <h3>RadFlow</h3>
-          <p>
-            A full-stack Radiology Workflow system designed for hospital settings. 
-            Supports a user-technologist-radiologist workflow for medical images with 
-            an option for AI analysis.
+          <p class="prose">
+            I'm a Computer Science graduate from the University of Wisconsin–Madison
+            with a focus on developing innovative and impactful software. I enjoy
+            shipping clean interfaces, exploring applied machine learning, and
+            bringing ideas from prototype to production. Always excited to join
+            forward-thinking teams and keep growing as a software engineer.
           </p>
-          <ul class="work__list">
-            <li>JavaScript</li>
-            <li>MongoDB</li>
-            <li>Node.js</li>
-          </ul>
+        </section>
 
-          <div class="work__links">
-            <a href="RadFlow.html" class="link__text">
-              View Project <span>&rarr;</span>
-            </a>
-            <a href="https://github.com/Chirag-Bhardwaj/RadFlow" title="View Source Code" target="_blank">
-              <img src="./images/github.svg" class="work__code" alt="GitHub">
-            </a>
+        <section class="section" id="skills">
+          <div class="section__header">
+            <h2>Skills &amp; Tools</h2>
           </div>
-        </div>
-        <div class="work__image-box">
-          <img src="RadFlow.png" class="work__image" alt="RadFlow Project" />
-        </div>
-      </div>
+          <div class="pill-grid">
+            <span>Python</span>
+            <span>Java</span>
+            <span>C</span>
+            <span>C++</span>
+            <span>JavaScript</span>
+            <span>TypeScript</span>
+            <span>React</span>
+            <span>React Native</span>
+            <span>Node.js</span>
+            <span>Flask</span>
+            <span>MongoDB</span>
+            <span>Firebase</span>
+            <span>Git</span>
+          </div>
+        </section>
 
+        <section class="section" id="projects">
+          <div class="section__header">
+            <h2>Projects</h2>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>Pneumonia X-Ray Detector</h3>
+              <p class="card__meta">Python · Flask · VGG-16</p>
+              <p>
+                AI diagnostic tool trained on the NIH chest X-ray dataset. Uses
+                transfer learning with VGG-16 to classify pneumonia, reaching
+                92.4% accuracy.
+              </p>
+              <div class="card__links">
+                <a href="https://github.com/Chirag-Bhardwaj/Pneumonia-XRay-Detector" target="_blank" rel="noreferrer">Source</a>
+              </div>
+            </article>
+            <article class="card">
+              <h3>Dating App</h3>
+              <p class="card__meta">React Native · Firebase · JavaScript</p>
+              <p>
+                Full-stack mobile dating app with account creation, profile
+                swiping, and matching — backed by Firebase auth and a smooth,
+                responsive UI.
+              </p>
+              <div class="card__links">
+                <a href="https://github.com/Chirag-Bhardwaj/Dating-App" target="_blank" rel="noreferrer">Source</a>
+              </div>
+            </article>
+            <article class="card">
+              <h3>RadFlow</h3>
+              <p class="card__meta">Node.js · MongoDB · JavaScript</p>
+              <p>
+                Full-stack radiology workflow system designed for hospitals.
+                Supports a user → technologist → radiologist pipeline for
+                medical images with optional AI analysis.
+              </p>
+              <div class="card__links">
+                <a href="https://github.com/Chirag-Bhardwaj/RadFlow" target="_blank" rel="noreferrer">Source</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="arcade">
+          <div class="section__header">
+            <h2>Arcade</h2>
+            <p>A few small things I built for fun.</p>
+          </div>
+          <div class="card-grid">
+            <article class="card">
+              <h3>Snake</h3>
+              <p class="card__meta">HTML · CSS · JavaScript</p>
+              <p>The classic snake game, rebuilt in vanilla JS.</p>
+              <div class="card__links">
+                <a href="SnakeGame.html">Play</a>
+              </div>
+            </article>
+            <article class="card">
+              <h3>People Counter</h3>
+              <p class="card__meta">HTML · JavaScript</p>
+              <p>A tiny utility for counting people in a room.</p>
+              <div class="card__links">
+                <a href="PeopleCounter.html">Open</a>
+              </div>
+            </article>
+            <article class="card">
+              <h3>Chirag Coin</h3>
+              <p class="card__meta">HTML · JavaScript</p>
+              <p>A coin-flip experiment.</p>
+              <div class="card__links">
+                <a href="Chirag-Coin.html">Open</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="contact">
+          <div class="section__header">
+            <h2>Get in Touch</h2>
+            <p>Always open to collaborating on projects or chatting about new opportunities.</p>
+          </div>
+          <div class="hero__cta">
+            <a class="btn ghost" href="mailto:chiragbhardwaj2002@gmail.com">chiragbhardwaj2002@gmail.com</a>
+            <a class="btn ghost" href="https://www.linkedin.com/in/chiragbhardwaj18" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="btn ghost" href="https://github.com/Chirag-Bhardwaj" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>© 2026 Chirag Bhardwaj. Built for GitHub Pages.</p>
+        <a href="#top">Back to top</a>
+      </footer>
     </div>
-  </div>
-</section>
-
-
-  <!-- ***** Contact ***** -->
-
-  <section class="contact" id="contact">
-    <div class="row">
-      <h2>Get in Touch</h2>
-      <div class="contact__info">
-        <p>
-          I am always excited to contribute on projects or explore job opportunities. 
-          Feel free to reach me out for the same!
-        </p>
-        <a href="mailto:chiragbhardwaj2002@gmail.com" class="btn">chiragbhardwaj2002@gmail.com</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ***** Footer ***** -->
-
-  <footer role="contentinfo" class="footer">
-    <div class="row">
-      <ul class="footer__social-links">
-        <li class="footer__social-link-item">
-          <a href="https://github.com/Chirag-Bhardwaj" title="Link to Github Profile">
-            <img src="./images/github.svg" class="footer__social-image" alt="Github">
-          </a>
-        </li>
-        <li class="footer__social-link-item">
-          <a href="https://www.linkedin.com/in/chiragbhardwaj18">
-            <img src="./images/linkedin.svg" title="Link to Linkedin Profile" class="footer__social-image" alt="Linkedin">
-          </a>
-        </li>
-      </ul>
-
-      <p>
-        &copy; 2025 - Chirag Bhardwaj
-        <br>
-      </p>
-      <div class="footer__github-buttons">
-      </div>
-    </div>
-  </footer>
-
-  <a href="#top" class="back-to-top" title="Back to Top">
-    <img src="./images/arrow-up.svg" alt="Back to Top" class="back-to-top__image"/>
-  </a>
-  <script src="./index.js"></script>
-</body>
-
+  </body>
 </html>
