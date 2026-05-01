@@ -156,15 +156,67 @@ a {
   z-index: 1;
 }
 
-.brand-logo {
-  width: clamp(140px, 22vw, 200px);
-  height: auto;
-  border-radius: 24px;
-  background: var(--ink);
-  padding: 18px;
-  box-shadow: 0 18px 36px rgba(31, 47, 59, 0.18);
-  filter: drop-shadow(0 6px 12px rgba(31, 47, 59, 0.1));
+.terminal {
+  width: 100%;
+  max-width: 360px;
+  background: #1d2f26;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(31, 47, 59, 0.22);
+  font-family: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
   user-select: none;
+}
+
+.terminal__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #2a3f33;
+}
+
+.terminal__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.terminal__dot--r { background: #ff5f57; }
+.terminal__dot--y { background: #febc2e; }
+.terminal__dot--g { background: #28c840; }
+
+.terminal__title {
+  margin-left: auto;
+  color: rgba(230, 248, 209, 0.55);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.terminal__body {
+  padding: 18px 18px 22px;
+  color: #e6f8d1;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.t-prompt { color: #c1e2be; }
+.t-cmd { color: #ffffff; }
+.t-out { color: rgba(230, 248, 209, 0.78); }
+
+.t-cursor {
+  display: inline-block;
+  margin-left: 4px;
+  animation: blink 1s steps(1) infinite;
+  color: #c1e2be;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .section {
