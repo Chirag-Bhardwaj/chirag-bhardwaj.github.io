@@ -1,6 +1,6 @@
 # chirag-bhardwaj.github.io
 
-Personal site for Chirag Bhardwaj — software engineer.
+Personal Website.
 
 Live at https://chirag-bhardwaj.github.io
 
