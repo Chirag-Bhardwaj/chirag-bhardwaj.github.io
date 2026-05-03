@@ -1,3 +1,20 @@
-# Chirag-Bhardwaj.github.io
+# chirag-bhardwaj.github.io
 
-<img width="1440" alt="Screenshot website" src="https://user-images.githubusercontent.com/64469853/171345923-5ae0d8c1-170e-4f7a-9d16-efcfb4aa150e.png">
+Personal site for Chirag Bhardwaj — software engineer.
+
+Live at https://chirag-bhardwaj.github.io
+
+## Stack
+
+Static HTML + CSS, hosted on GitHub Pages. Two small games (`game.html`,
+`SnakeGame.html`) are linked from the Arcade section.
+
+## Local preview
+
+Open `index.html` directly in a browser, or serve the directory:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then visit http://localhost:8000.
